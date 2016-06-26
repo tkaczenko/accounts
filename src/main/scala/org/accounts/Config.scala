@@ -20,4 +20,5 @@ object Config {
     val dbName = mongoConfig.getString("dbName")
     val collectionAccounts = mongoConfig.getString("collectionAccounts")
   }
+
 }

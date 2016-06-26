@@ -1,12 +1,16 @@
 package org.accounts.routes
 
+import org.accounts.models.CustomJSONProtocol._
+import org.accounts.services.AccountService
 import spray.routing.HttpService
 
 trait AccountRoute extends HttpService {
   val routs =
     post {
       path("create") {
-        complete(???)
+        entity(as[Account]) { account => implicit requestContext =>
+          AccountService.create(account)
+        }
       } ~
         path("update") {
           complete(???)

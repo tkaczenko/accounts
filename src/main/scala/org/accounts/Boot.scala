@@ -1,14 +1,14 @@
 package org.accounts
 
-import scala.concurrent.duration._
 import akka.actor.{ActorSystem, Props}
 import akka.io.IO
 import akka.pattern.ask
 import akka.util.Timeout
+import org.accounts.Config._
 import org.accounts.routes.MainActor
 import spray.can.Http
 
-import Config._
+import scala.concurrent.duration._
 
 object Boot extends App {
   implicit val system = ActorSystem(actorSystemName)

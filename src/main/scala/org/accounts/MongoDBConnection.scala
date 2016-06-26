@@ -1,10 +1,10 @@
 package org.accounts
 
+import org.accounts.Config.MongoDB._
 import reactivemongo.api.MongoDriver
 import reactivemongo.api.collections.bson.BSONCollection
-import scala.concurrent.ExecutionContext.Implicits.global
 
-import Config.MongoDB._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object MongoDBConnection {
   val driver = new MongoDriver
