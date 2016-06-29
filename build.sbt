@@ -16,6 +16,7 @@ libraryDependencies ++= {
     "io.spray" %% "spray-testkit" % sprayV % "test",
     "io.spray" %%  "spray-json" % "1.3.2",
     "joda-time" % "joda-time" % "2.9.4",
+    "org.joda" % "joda-convert" % "1.8",
     "com.typesafe.akka" %% "akka-actor" % akkaV,
     "com.typesafe.akka" %% "akka-testkit" % akkaV % "test",
     "org.scalatest" %% "scalatest" % "2.2.6" % "test",

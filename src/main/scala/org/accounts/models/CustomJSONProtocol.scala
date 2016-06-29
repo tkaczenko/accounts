@@ -21,7 +21,7 @@ object CustomJSONProtocol {
                      permissions: Seq[String],
                      info: AccountInfo,
                      created: DateTime,
-                     hash: Array[Byte],
+                     hash: Int,
                      sessionTime: Long)
 
   case class Response(code: Int, message: String)

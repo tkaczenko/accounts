@@ -19,7 +19,7 @@ case class AccountEntity(id: BSONObjectID = BSONObjectID.generate,
                          permissions: Seq[String],
                          info: AccountInfo,
                          created: DateTime,
-                         hash: Array[Byte],
+                         hash: Int,
                          session_time: Long)
 
 object AccountEntity {
@@ -63,7 +63,7 @@ object AccountEntity {
         permissions = doc.getAs[Seq[String]]("permissions").getOrElse(default = Seq()),
         info = doc.getAs[AccountInfo]("info").get,
         created = doc.getAs[DateTime]("created").get,
-        hash = doc.getAs[Array[Byte]]("hash").get,
+        hash = doc.getAs[Int]("hash").get,
         session_time = doc.getAs[Long]("session_time").getOrElse(15)
       )
   }
