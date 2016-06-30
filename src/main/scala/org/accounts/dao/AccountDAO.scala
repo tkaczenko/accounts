@@ -25,6 +25,12 @@ object AccountDAO {
       BSONDocument("$set" -> BSONDocument("hash" -> hash))
     )
 
+  def updatePasswordByLogin(login: String, hash: Int) = MongoDBConnection.collection_accounts
+    .findAndUpdate(
+      BSONDocument("login" -> login),
+      BSONDocument("$set" -> BSONDocument("hash" -> hash))
+    )
+
   def findById(id: Int) = MongoDBConnection.collection_accounts
     .find(BSONDocument("_id" -> id))
     .one[AccountEntity]
