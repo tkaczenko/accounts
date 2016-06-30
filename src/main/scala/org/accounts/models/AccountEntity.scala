@@ -1,27 +1,12 @@
 package org.accounts.models
 
-import org.accounts.models.CustomJSONProtocol.Account
 import org.joda.time.format.ISODateTimeFormat
 import org.joda.time.{DateTime, DateTimeZone}
-import reactivemongo.bson.{BSONDateTime, BSONDocument, BSONDocumentReader, BSONDocumentWriter, BSONHandler, BSONObjectID}
+import reactivemongo.bson.{BSONDateTime, BSONDocument, BSONDocumentReader, BSONDocumentWriter, BSONHandler}
 
 /**
   * Created by tkacz- on 21.06.16.
   */
-case class AccountEntity(id: Int,
-                         enabled: Boolean,
-                         login: String,
-                         email: String,
-                         name: Option[String],
-                         surname: Option[String],
-                         roles: Seq[String],
-                         groups: Seq[String],
-                         permissions: Seq[String],
-                         info: AccountInfo,
-                         created: DateTime,
-                         hash: Int,
-                         session_time: Long)
-
 object AccountEntity {
   implicit def toAccountEntity(account: Account) =
     AccountEntity(
@@ -89,3 +74,17 @@ object AccountEntity {
   }
 
 }
+
+case class AccountEntity(id: Int,
+                         enabled: Boolean,
+                         login: String,
+                         email: String,
+                         name: Option[String],
+                         surname: Option[String],
+                         roles: Seq[String],
+                         groups: Seq[String],
+                         permissions: Seq[String],
+                         info: AccountInfo,
+                         created: DateTime,
+                         hash: Int,
+                         session_time: Long)

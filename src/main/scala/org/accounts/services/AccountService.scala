@@ -2,6 +2,7 @@ package org.accounts.services
 
 import org.accounts.CustomLogger
 import org.accounts.dao.AccountDAO
+import org.accounts.models.MasterJsonProtocol._
 import org.accounts.models._
 import spray.http.StatusCodes
 import spray.routing.RequestContext
@@ -12,7 +13,6 @@ import scala.util.{Failure, Success, Try}
 /**
   * Created by tkacz- on 25.06.16.
   */
-
 object AccountService {
   def create(account: Account)(implicit requestContext: RequestContext) = {
     AccountDAO.findByLogin(account.login) map {

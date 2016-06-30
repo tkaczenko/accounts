@@ -8,40 +8,6 @@ import spray.json._
 /**
   * Created by tkacz- on 22.06.16.
   */
-case class Account(id: Int,
-                   enabled: Boolean,
-                   login: String,
-                   email: String,
-                   name: Option[String],
-                   surname: Option[String],
-                   roles: Seq[String],
-                   groups: Seq[String],
-                   permissions: Seq[String],
-                   info: AccountInfo,
-                   created: DateTime,
-                   hash: Int,
-                   sessionTime: Long)
-
-case class UpdatePassword(id: Int, hash: Int)
-
-case class UpdatePasswordByUser(login: String, hash: Int)
-
-case class UpdateInfo(login: String, info: AccountInfo)
-
-case class AccountId(id: Int)
-
-case class UpdateGroup(id: Int, name: String)
-
-case class UpdateRole(id: Int, name: String)
-
-case class ResponseString(code: Int, message: String)
-
-case class ResponseSeqString(code: Int, message: Seq[String])
-
-case class ResponseSeqAccount(code: Int, message: Seq[Account])
-
-case class ResponseLong(code: Int, message: Long)
-
 object MasterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
   implicit def toAccount(accountEntity: AccountEntity) =
     Account(
@@ -86,3 +52,37 @@ object MasterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
   implicit val responseLongFormat = jsonFormat2(ResponseLong.apply)
 
 }
+
+case class Account(id: Int,
+                   enabled: Boolean,
+                   login: String,
+                   email: String,
+                   name: Option[String],
+                   surname: Option[String],
+                   roles: Seq[String],
+                   groups: Seq[String],
+                   permissions: Seq[String],
+                   info: AccountInfo,
+                   created: DateTime,
+                   hash: Int,
+                   sessionTime: Long)
+
+case class UpdatePassword(id: Int, hash: Int)
+
+case class UpdatePasswordByUser(login: String, hash: Int)
+
+case class UpdateInfo(login: String, info: AccountInfo)
+
+case class AccountId(id: Int)
+
+case class UpdateGroup(id: Int, name: String)
+
+case class UpdateRole(id: Int, name: String)
+
+case class ResponseString(code: Int, message: String)
+
+case class ResponseSeqString(code: Int, message: Seq[String])
+
+case class ResponseSeqAccount(code: Int, message: Seq[Account])
+
+case class ResponseLong(code: Int, message: Long)
