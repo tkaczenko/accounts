@@ -20,7 +20,7 @@ object AccountService {
         AccountDAO.create(account)
           .onComplete(processResult)
       case _ =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "Someone already has that login"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "Someone already has that login"))
     }
   }
 
@@ -29,20 +29,20 @@ object AccountService {
       case None =>
         AccountDAO.findById(account.id) map {
           case None =>
-            requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+            requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
           case _ =>
             AccountDAO.updateById(account)
               .onComplete(processResult)
         }
       case _ =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "Someone already has that login"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "Someone already has that login"))
     }
   }
 
   def updatePassword(updatePassword: UpdatePassword)(implicit requestContext: RequestContext) = {
     AccountDAO.findById(updatePassword.id) map {
       case None =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
       case _ =>
         AccountDAO.updatePasswordByID(updatePassword.id, updatePassword.hash)
           .onComplete(processResult)
@@ -52,7 +52,7 @@ object AccountService {
   def updatePasswordProfile(updatePasswordByUser: UpdatePasswordByUser)(implicit requestContext: RequestContext) = {
     AccountDAO.findByLogin(updatePasswordByUser.login) map {
       case None =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
       case _ =>
         AccountDAO.updatePasswordByLogin(updatePasswordByUser.login, updatePasswordByUser.hash)
           .onComplete(processResult)
@@ -62,7 +62,7 @@ object AccountService {
   def updateInfo(updateInfo: UpdateInfo)(implicit requestContext: RequestContext) = {
     AccountDAO.findByLogin(updateInfo.login) map {
       case None =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
       case _ =>
         AccountDAO.updateInfo(updateInfo.login, updateInfo.info)
           .onComplete(processResult)
@@ -77,7 +77,7 @@ object AccountService {
   def enable(accountId: AccountId)(implicit requestContext: RequestContext) = {
     AccountDAO.findById(accountId.id) map {
       case None =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
       case _ =>
         AccountDAO.setEnabled(accountId.id, true)
           .onComplete(processResult)
@@ -87,7 +87,7 @@ object AccountService {
   def disable(accountId: AccountId)(implicit requestContext: RequestContext) = {
     AccountDAO.findById(accountId.id) map {
       case None =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
       case _ =>
         AccountDAO.setEnabled(accountId.id, false)
           .onComplete(processResult)
@@ -97,7 +97,7 @@ object AccountService {
   def deleteGroup(updateGroup: UpdateGroup)(implicit requestContext: RequestContext) = {
     AccountDAO.findById(updateGroup.id) map {
       case None =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
       case Some(accountEntity) => {
         val updatedAccount = accountEntity.copy(groups = accountEntity.groups.filter(_ != updateGroup.name))
         AccountDAO.updateById(updatedAccount)
@@ -109,7 +109,7 @@ object AccountService {
   def deleteRole(updateRole: UpdateRole)(implicit requestContext: RequestContext) = {
     AccountDAO.findById(updateRole.id) map {
       case None =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
       case Some(accountEntity) => {
         val updatedAccount = accountEntity.copy(roles = accountEntity.groups.filter(_ != updateRole.name))
         AccountDAO.updateById(updatedAccount)
@@ -121,7 +121,7 @@ object AccountService {
   def insertRole(updateRole: UpdateRole)(implicit requestContext: RequestContext) = {
     AccountDAO.findById(updateRole.id) map {
       case None =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
       case Some(accountEntity) => {
         val updatedAccount = accountEntity.copy(roles = accountEntity.roles :+ updateRole.name)
         AccountDAO.updateById(updatedAccount)
@@ -133,7 +133,7 @@ object AccountService {
   def insertGroup(updateGroup: UpdateGroup)(implicit requestContext: RequestContext) = {
     AccountDAO.findById(updateGroup.id) map {
       case None =>
-        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
       case Some(accountEntity) => {
         val updatedAccount = accountEntity.copy(groups = accountEntity.groups :+ updateGroup.name)
         AccountDAO.updateById(updatedAccount)
@@ -144,10 +144,10 @@ object AccountService {
 
   def processResult[T](value: Try[T])(implicit requestContext: RequestContext) = {
     value match {
-      case Success(writeResult) => requestContext.complete(Response(StatusCodes.OK.intValue, "Success"))
+      case Success(writeResult) => requestContext.complete(ResponseString(StatusCodes.OK.intValue, "Success"))
       case Failure(ex) => {
         CustomLogger.logger.error(ex.getMessage, ex)
-        requestContext.complete(Response(StatusCodes.BadRequest.intValue, "Error"))
+        requestContext.complete(ResponseString(StatusCodes.BadRequest.intValue, "Error"))
       }
     }
   }

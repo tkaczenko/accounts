@@ -32,11 +32,15 @@ object CustomJSONProtocol {
   case class UpdateGroup(id: Int, name: String)
   case class UpdateRole(id: Int, name: String)
 
-  case class Response(code: Int, message: String)
+  case class ResponseString(code: Int, message: String)
+  case class ResponseSeqString(code: Int, message: Seq[String])
+  case class ResponseSeqAccount(code: Int, message: Seq[Account])
+  case class ResponseLong(code: Int, message: Long)
 
   object UpdatePassword extends DefaultJsonProtocol with SprayJsonSupport {
     implicit val updatePasswordFormat = jsonFormat2(UpdatePassword.apply)
   }
+
   object UpdatePasswordByUser extends DefaultJsonProtocol with SprayJsonSupport {
     implicit val updatePasswordFormat = jsonFormat2(UpdatePasswordByUser.apply)
   }
@@ -58,8 +62,20 @@ object CustomJSONProtocol {
     implicit val updateRoleFormat = jsonFormat2(UpdateRole.apply)
   }
 
-  object Response extends DefaultJsonProtocol with SprayJsonSupport {
-    implicit val responseFormat = jsonFormat2(Response.apply)
+  object ResponseString extends DefaultJsonProtocol with SprayJsonSupport {
+    implicit val responseStringFormat = jsonFormat2(ResponseString.apply)
+  }
+
+  object ResponseSeqString extends DefaultJsonProtocol with SprayJsonSupport {
+    implicit val responseSeqStringFormat = jsonFormat2(ResponseSeqString.apply)
+  }
+
+  object ResponseSeqAccount extends DefaultJsonProtocol with SprayJsonSupport {
+    implicit val responseSeqAccountFormat = jsonFormat2(ResponseSeqAccount.apply)
+  }
+
+  object ResponseLong extends DefaultJsonProtocol with SprayJsonSupport {
+    implicit val responseLongFormat = jsonFormat2(ResponseLong.apply)
   }
 
   object Account extends DefaultJsonProtocol with SprayJsonSupport {
