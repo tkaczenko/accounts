@@ -29,6 +29,7 @@ object CustomJSONProtocol {
   case class UpdatePasswordByUser(login: String, hash: Int)
   case class UpdateInfo(login: String, info: AccountInfo)
   case class AccountId(id: Int)
+  case class UpdateGroup(id: Int, name: String)
 
   case class Response(code: Int, message: String)
 
@@ -46,6 +47,10 @@ object CustomJSONProtocol {
 
   object AccountId extends DefaultJsonProtocol with SprayJsonSupport {
     implicit val accountIdFormat = jsonFormat1(AccountId.apply)
+  }
+
+  object UpdateGroup extends DefaultJsonProtocol with SprayJsonSupport {
+    implicit val updateGroupFormat = jsonFormat2(UpdateGroup.apply)
   }
 
   object Response extends DefaultJsonProtocol with SprayJsonSupport {

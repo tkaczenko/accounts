@@ -94,6 +94,30 @@ object AccountService {
     }
   }
 
+  def deleteGroup(updateGroup: UpdateGroup)(implicit requestContext: RequestContext) = {
+    AccountDAO.findById(updateGroup.id) map {
+      case None =>
+        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+      case Some(accountEntity) => {
+        val updatedAccount = accountEntity.copy(groups = accountEntity.groups.filter(_ != updateGroup.name))
+        AccountDAO.updateById(updatedAccount)
+          .onComplete(processResult)
+      }
+    }
+  }
+
+  def insertGroup(updateGroup: UpdateGroup)(implicit requestContext: RequestContext) = {
+    AccountDAO.findById(updateGroup.id) map {
+      case None =>
+        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+      case Some(accountEntity) => {
+        val updatedAccount = accountEntity.copy(groups = accountEntity.groups :+ updateGroup.name)
+        AccountDAO.updateById(updatedAccount)
+          .onComplete(processResult)
+      }
+    }
+  }
+
   def processResult[T](value: Try[T])(implicit requestContext: RequestContext) = {
     value match {
       case Success(writeResult) => requestContext.complete(Response(StatusCodes.OK.intValue, "Success"))
