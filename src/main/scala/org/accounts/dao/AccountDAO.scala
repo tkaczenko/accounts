@@ -1,7 +1,7 @@
 package org.accounts.dao
 
 import org.accounts.MongoDBConnection
-import org.accounts.models.AccountEntity
+import org.accounts.models.{AccountEntity, AccountInfo}
 import reactivemongo.bson._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -29,6 +29,12 @@ object AccountDAO {
     .findAndUpdate(
       BSONDocument("login" -> login),
       BSONDocument("$set" -> BSONDocument("hash" -> hash))
+    )
+
+  def updateInfo(login: String, accountInfo: AccountInfo) = MongoDBConnection.collection_accounts
+    .findAndUpdate(
+      BSONDocument("login" -> login),
+      BSONDocument("$set" -> BSONDocument("info" -> accountInfo))
     )
 
   def findById(id: Int) = MongoDBConnection.collection_accounts
