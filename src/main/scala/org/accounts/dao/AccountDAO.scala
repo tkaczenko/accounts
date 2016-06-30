@@ -13,6 +13,12 @@ object AccountDAO {
   def create(accountEntity: AccountEntity) = MongoDBConnection.collection_accounts
     .insert(accountEntity)
 
+  def updateById(accountEntity: AccountEntity) = MongoDBConnection.collection_accounts
+    .findAndUpdate(
+      BSONDocument("_id" -> accountEntity.id),
+      BSONDocument("$set" -> accountEntity)
+    )
+
   def findById(id: String) = MongoDBConnection.collection_accounts
     .find(BSONDocument("_id" -> BSONObjectID(id))).one[AccountEntity]
 

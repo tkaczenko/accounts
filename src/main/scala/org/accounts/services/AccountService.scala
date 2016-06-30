@@ -15,9 +15,23 @@ import scala.util.{Failure, Success, Try}
 
 object AccountService {
   def create(account: Account)(implicit requestContext: RequestContext) = {
-    AccountDAO.findByLogin(account.login).map {
+    AccountDAO.findByLogin(account.login) map {
       case None =>
         AccountDAO.create(account).onComplete(processResult)
+      case _ =>
+        requestContext.complete(Response(StatusCodes.NotFound.intValue, "Someone already has that login"))
+    }
+  }
+
+  def update(account: Account)(implicit requestContext: RequestContext) = {
+    AccountDAO.findByLogin(account.login) map {
+      case None =>
+        AccountDAO.findById(account.id.toString) map {
+          case None =>
+            requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+          case _ =>
+            AccountDAO.updateById(account).onComplete(processResult)
+        }
       case _ =>
         requestContext.complete(Response(StatusCodes.NotFound.intValue, "Someone already has that login"))
     }
