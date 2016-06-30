@@ -74,6 +74,26 @@ object AccountService {
       .onComplete(processResult)
   }
 
+  def enable(accountId: AccountId)(implicit requestContext: RequestContext) = {
+    AccountDAO.findById(accountId.id) map {
+      case None =>
+        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+      case _ =>
+        AccountDAO.setEnabled(accountId.id, true)
+          .onComplete(processResult)
+    }
+  }
+
+  def disable(accountId: AccountId)(implicit requestContext: RequestContext) = {
+    AccountDAO.findById(accountId.id) map {
+      case None =>
+        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+      case _ =>
+        AccountDAO.setEnabled(accountId.id, false)
+          .onComplete(processResult)
+    }
+  }
+
   def processResult[T](value: Try[T])(implicit requestContext: RequestContext) = {
     value match {
       case Success(writeResult) => requestContext.complete(Response(StatusCodes.OK.intValue, "Success"))

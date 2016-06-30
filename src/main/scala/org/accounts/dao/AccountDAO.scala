@@ -42,6 +42,12 @@ object AccountDAO {
     .cursor[AccountEntity]()
     .collect[List]()
 
+  def setEnabled(id: Int, enabled: Boolean) = MongoDBConnection.collection_accounts
+    .findAndUpdate(
+      BSONDocument("_id" -> id),
+      BSONDocument("$set" -> BSONDocument("enabled" -> enabled))
+    )
+
   def findById(id: Int) = MongoDBConnection.collection_accounts
     .find(BSONDocument("_id" -> id))
     .one[AccountEntity]

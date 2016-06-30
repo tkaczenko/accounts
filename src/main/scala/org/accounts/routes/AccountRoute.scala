@@ -37,10 +37,14 @@ trait AccountRoute extends HttpService {
             AccountService.list()
         } ~
         path("enable") {
-          complete(???)
+          entity(as[AccountId]) { accountId => implicit requestContext =>
+            AccountService.enable(accountId)
+          }
         } ~
         path("disable") {
-          complete(???)
+          entity(as[AccountId]) { accountId => implicit requestContext =>
+            AccountService.disable(accountId)
+          }
         } ~
         path("delete_group") {
           complete(???)
