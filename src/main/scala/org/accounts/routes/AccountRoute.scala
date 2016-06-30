@@ -57,10 +57,14 @@ trait AccountRoute extends HttpService {
           }
         } ~
         path("delete_role") {
-          complete(???)
+          entity(as[UpdateRole]) { role => implicit requestContext =>
+            AccountService.deleteRole(role)
+          }
         } ~
         path("insert_role") {
-          complete(???)
+          entity(as[UpdateRole]) { role => implicit requestContext =>
+            AccountService.insertRole(role)
+          }
         } ~
         path("session_time") {
           complete(???)

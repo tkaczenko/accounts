@@ -106,6 +106,30 @@ object AccountService {
     }
   }
 
+  def deleteRole(updateRole: UpdateRole)(implicit requestContext: RequestContext) = {
+    AccountDAO.findById(updateRole.id) map {
+      case None =>
+        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+      case Some(accountEntity) => {
+        val updatedAccount = accountEntity.copy(roles = accountEntity.groups.filter(_ != updateRole.name))
+        AccountDAO.updateById(updatedAccount)
+          .onComplete(processResult)
+      }
+    }
+  }
+
+  def insertRole(updateRole: UpdateRole)(implicit requestContext: RequestContext) = {
+    AccountDAO.findById(updateRole.id) map {
+      case None =>
+        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+      case Some(accountEntity) => {
+        val updatedAccount = accountEntity.copy(roles = accountEntity.roles :+ updateRole.name)
+        AccountDAO.updateById(updatedAccount)
+          .onComplete(processResult)
+      }
+    }
+  }
+
   def insertGroup(updateGroup: UpdateGroup)(implicit requestContext: RequestContext) = {
     AccountDAO.findById(updateGroup.id) map {
       case None =>
