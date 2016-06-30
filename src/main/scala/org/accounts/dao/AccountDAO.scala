@@ -19,10 +19,18 @@ object AccountDAO {
       BSONDocument("$set" -> accountEntity)
     )
 
-  def findById(id: String) = MongoDBConnection.collection_accounts
-    .find(BSONDocument("_id" -> BSONObjectID(id))).one[AccountEntity]
+  def updatePasswordByID(id: Int, hash: Int) = MongoDBConnection.collection_accounts
+    .findAndUpdate(
+      BSONDocument("_id" -> id),
+      BSONDocument("$set" -> BSONDocument("hash" -> hash))
+    )
+
+  def findById(id: Int) = MongoDBConnection.collection_accounts
+    .find(BSONDocument("_id" -> id))
+    .one[AccountEntity]
 
   def findByLogin(login: String) = MongoDBConnection.collection_accounts
-    .find(BSONDocument("login" -> login)).one[AccountEntity]
+    .find(BSONDocument("login" -> login))
+    .one[AccountEntity]
 
 }

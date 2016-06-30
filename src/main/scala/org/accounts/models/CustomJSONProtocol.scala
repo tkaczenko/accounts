@@ -25,7 +25,13 @@ object CustomJSONProtocol {
                      hash: Int,
                      sessionTime: Long)
 
+  case class UpdatePassword(id: Int, hash: Int)
+
   case class Response(code: Int, message: String)
+
+  object UpdatePassword extends DefaultJsonProtocol with SprayJsonSupport {
+    implicit val updatePasswordFormat = jsonFormat2(UpdatePassword.apply)
+  }
 
   object Response extends DefaultJsonProtocol with SprayJsonSupport {
     implicit val responseFormat = jsonFormat2(Response.apply)

@@ -18,7 +18,9 @@ trait AccountRoute extends HttpService {
           }
         } ~
         path("update_password") {
-          complete(???)
+          entity(as[UpdatePassword]) { password => implicit requestContext =>
+            AccountService.updatePassword(password)
+          }
         } ~
         path("profile" / "update_password") {
           complete(???)

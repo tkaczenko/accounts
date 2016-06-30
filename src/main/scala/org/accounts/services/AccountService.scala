@@ -26,7 +26,7 @@ object AccountService {
   def update(account: Account)(implicit requestContext: RequestContext) = {
     AccountDAO.findByLogin(account.login) map {
       case None =>
-        AccountDAO.findById(account.id.toString) map {
+        AccountDAO.findById(account.id) map {
           case None =>
             requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
           case _ =>
@@ -34,6 +34,15 @@ object AccountService {
         }
       case _ =>
         requestContext.complete(Response(StatusCodes.NotFound.intValue, "Someone already has that login"))
+    }
+  }
+
+  def updatePassword(updatePassword: UpdatePassword)(implicit requestContext: RequestContext) = {
+    AccountDAO.findById(updatePassword.id) map {
+      case None =>
+        requestContext.complete(Response(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+      case _ =>
+        AccountDAO.updatePasswordByID(updatePassword.id, updatePassword.hash).onComplete(processResult)
     }
   }
 
