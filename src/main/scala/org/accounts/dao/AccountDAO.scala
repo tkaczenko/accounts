@@ -37,6 +37,11 @@ object AccountDAO {
       BSONDocument("$set" -> BSONDocument("info" -> accountInfo))
     )
 
+  def findAll() = MongoDBConnection.collection_accounts
+    .find(BSONDocument.empty)
+    .cursor[AccountEntity]()
+    .collect[List]()
+
   def findById(id: Int) = MongoDBConnection.collection_accounts
     .find(BSONDocument("_id" -> id))
     .one[AccountEntity]

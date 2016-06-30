@@ -69,6 +69,11 @@ object AccountService {
     }
   }
 
+  def list()(implicit requestContext: RequestContext) = {
+    AccountDAO.findAll()
+      .onComplete(processResult)
+  }
+
   def processResult[T](value: Try[T])(implicit requestContext: RequestContext) = {
     value match {
       case Success(writeResult) => requestContext.complete(Response(StatusCodes.OK.intValue, "Success"))

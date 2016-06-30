@@ -33,7 +33,8 @@ trait AccountRoute extends HttpService {
           }
         } ~
         path("list") {
-          complete(???)
+          implicit requestContext =>
+            AccountService.list()
         } ~
         path("enable") {
           complete(???)
