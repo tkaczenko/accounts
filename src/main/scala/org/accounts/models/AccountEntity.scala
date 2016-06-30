@@ -8,7 +8,7 @@ import reactivemongo.bson.{BSONDateTime, BSONDocument, BSONDocumentReader, BSOND
 /**
   * Created by tkacz- on 21.06.16.
   */
-case class AccountEntity(id: BSONObjectID = BSONObjectID.generate,
+case class AccountEntity(id: Int,
                          enabled: Boolean,
                          login: String,
                          email: String,
@@ -25,6 +25,7 @@ case class AccountEntity(id: BSONObjectID = BSONObjectID.generate,
 object AccountEntity {
   implicit def toAccountEntity(account: Account) =
     AccountEntity(
+      id = account.id,
       enabled = account.enabled,
       login = account.login,
       email = account.email,
@@ -52,7 +53,7 @@ object AccountEntity {
   implicit object AccountEntityReader extends BSONDocumentReader[AccountEntity] {
     def read(doc: BSONDocument): AccountEntity =
       AccountEntity(
-        id = doc.getAs[BSONObjectID]("_id").get,
+        id = doc.getAs[Int]("_id").get,
         enabled = doc.getAs[Boolean]("enabled").get,
         login = doc.getAs[String]("login").get,
         email = doc.getAs[String]("login").get,

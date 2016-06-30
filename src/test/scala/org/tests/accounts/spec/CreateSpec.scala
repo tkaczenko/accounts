@@ -16,7 +16,8 @@ class CreateSpec extends FlatSpec with ScalatestRouteTest with HttpService with 
 
   it should ("return JSON response with code 200") in {
     Post(url, HttpEntity(`application/json`,
-      """{"enabled":true,
+      """{"id":1,
+        |"enabled":true,
         |"login":"ivanov111",
         |"email":"ivanov@gmail.com",
         |"name":"Ivan",

@@ -11,7 +11,8 @@ object CustomJSONProtocol {
 
   import spray.json._
 
-  case class Account(enabled: Boolean,
+  case class Account(id: Int,
+                     enabled: Boolean,
                      login: String,
                      email: String,
                      name: Option[String],
@@ -44,7 +45,7 @@ object CustomJSONProtocol {
     }
 
     implicit val accountInfoFormat = jsonFormat2(AccountInfo.apply)
-    implicit val accountFormat = jsonFormat12(Account.apply)
+    implicit val accountFormat = jsonFormat13(Account.apply)
   }
 
 }
