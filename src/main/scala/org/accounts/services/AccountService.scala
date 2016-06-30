@@ -2,7 +2,7 @@ package org.accounts.services
 
 import org.accounts.CustomLogger
 import org.accounts.dao.AccountDAO
-import org.accounts.models.CustomJSONProtocol._
+import org.accounts.models._
 import spray.http.StatusCodes
 import spray.routing.RequestContext
 
@@ -70,8 +70,10 @@ object AccountService {
   }
 
   def list()(implicit requestContext: RequestContext) = {
-    AccountDAO.findAll()
-      .onComplete(processResult)
+    requestContext.complete(
+      AccountDAO.findAll().map(accounts => ResponseSeqAccount(StatusCodes.OK.intValue, accounts
+        .map(x => MasterJsonProtocol.toAccount(x))))
+    )
   }
 
   def enable(accountId: AccountId)(implicit requestContext: RequestContext) = {
