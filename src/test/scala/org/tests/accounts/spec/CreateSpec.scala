@@ -1,6 +1,6 @@
 package org.tests.accounts.spec
 
-import org.accounts.models.CustomJSONProtocol.Response
+import org.accounts.models.{MasterJsonProtocol, ResponseString}
 import org.accounts.routes.AccountRoute
 import org.scalatest.FlatSpec
 import org.scalatest.concurrent.ScalaFutures
@@ -10,6 +10,8 @@ import spray.routing.HttpService
 import spray.testkit.ScalatestRouteTest
 
 class CreateSpec extends FlatSpec with ScalatestRouteTest with HttpService with AccountRoute with ScalaFutures {
+  import MasterJsonProtocol._
+
   val url = "/create"
 
   def actorRefFactory = system
@@ -30,7 +32,7 @@ class CreateSpec extends FlatSpec with ScalatestRouteTest with HttpService with 
         |"hash":123456,
         |"sessionTime":15}""".stripMargin)
     ) ~> routs ~> check {
-      responseAs[Response] === Response(code = 200, message = "Success")
+      responseAs[ResponseString] === ResponseString(code = 200, message = "Success")
     }
   }
 }
