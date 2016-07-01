@@ -32,7 +32,7 @@ trait AccountRoute extends HttpService {
         } ~
         path("profile" / "update_info") {
           entity(as[UpdateInfo]) { info => implicit requestContext =>
-            AccountService.updateInfo(info)
+            AccountService.updateInfoProfile(info)
           }
         } ~
         path("list") {
@@ -70,7 +70,9 @@ trait AccountRoute extends HttpService {
           }
         } ~
         path("session_time") {
-          complete(???)
+          entity(as[AccountLogin]) { login => implicit requesContext =>
+            AccountService.getSessionTime(login)
+          }
         } ~
         path("permissions") {
           complete(???)

@@ -40,12 +40,14 @@ object MasterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
   implicit val accountInfoFormat = jsonFormat2(AccountInfo.apply)
   implicit val accountFormat = jsonFormat13(Account.apply)
 
-  implicit val updatePasswordFormat = jsonFormat2(UpdatePassword.apply)
-  implicit val updatePasswordByUserFormat = jsonFormat2(UpdatePasswordByUser.apply)
+  implicit val updatePasswordFormat = jsonFormat3(UpdatePassword.apply)
+  implicit val updatePasswordByUserFormat = jsonFormat3(UpdatePasswordByUser.apply)
   implicit val updateInfoFormat = jsonFormat2(UpdateInfo.apply)
   implicit val accountIdFormat = jsonFormat1(AccountId.apply)
+  implicit val accountLoginFormat = jsonFormat1(AccountLogin.apply)
   implicit val updateGroupFormat = jsonFormat2(UpdateGroup.apply)
   implicit val updateRoleFormat = jsonFormat2(UpdateRole.apply)
+
   implicit val responseStringFormat = jsonFormat2(ResponseString.apply)
   implicit val responseSeqStringFormat = jsonFormat2(ResponseSeqString.apply)
   implicit val responseSeqAccountFormat = jsonFormat2(ResponseSeqAccount.apply)
@@ -67,13 +69,15 @@ case class Account(id: Int,
                    hash: Int,
                    sessionTime: Long)
 
-case class UpdatePassword(id: Int, hash: Int)
+case class UpdatePassword(id: Int, login: String, hash: Int)
 
-case class UpdatePasswordByUser(login: String, hash: Int)
+case class UpdatePasswordByUser(login: String, oldHash: Int, hash: Int)
 
 case class UpdateInfo(login: String, info: AccountInfo)
 
 case class AccountId(id: Int)
+
+case class AccountLogin(login: String)
 
 case class UpdateGroup(id: Int, name: String)
 

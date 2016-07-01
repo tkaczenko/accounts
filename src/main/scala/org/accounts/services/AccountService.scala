@@ -40,29 +40,40 @@ object AccountService {
   }
 
   def updatePassword(updatePassword: UpdatePassword)(implicit requestContext: RequestContext) = {
-    AccountDAO.findById(updatePassword.id) map {
+    AccountDAO.findByLogin(updatePassword.login) map {
       case None =>
-        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        AccountDAO.findById(updatePassword.id) map {
+          case None =>
+            requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+          case _ =>
+            AccountDAO.updatePasswordByID(updatePassword.id, updatePassword.hash)
+              .onComplete(processResult)
+        }
       case _ =>
-        AccountDAO.updatePasswordByID(updatePassword.id, updatePassword.hash)
-          .onComplete(processResult)
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "Someone already has that login"))
     }
   }
 
   def updatePasswordProfile(updatePasswordByUser: UpdatePasswordByUser)(implicit requestContext: RequestContext) = {
     AccountDAO.findByLogin(updatePasswordByUser.login) map {
       case None =>
-        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This login doesn't match any account"))
       case _ =>
-        AccountDAO.updatePasswordByLogin(updatePasswordByUser.login, updatePasswordByUser.hash)
-          .onComplete(processResult)
+        AccountDAO.checkPassword(updatePasswordByUser.login,
+          updatePasswordByUser.oldHash, updatePasswordByUser.hash) match {
+          case true =>
+            AccountDAO.updatePasswordByLogin(updatePasswordByUser.login, updatePasswordByUser.hash)
+              .onComplete(processResult)
+          case false =>
+            requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "Wrong password"))
+        }
     }
   }
 
-  def updateInfo(updateInfo: UpdateInfo)(implicit requestContext: RequestContext) = {
+  def updateInfoProfile(updateInfo: UpdateInfo)(implicit requestContext: RequestContext) = {
     AccountDAO.findByLogin(updateInfo.login) map {
       case None =>
-        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This login doesn't match any account"))
       case _ =>
         AccountDAO.updateInfo(updateInfo.login, updateInfo.info)
           .onComplete(processResult)
@@ -141,6 +152,15 @@ object AccountService {
         AccountDAO.updateById(updatedAccount)
           .onComplete(processResult)
       }
+    }
+  }
+
+  def getSessionTime(accountLogin: AccountLogin)(implicit requestContext: RequestContext) = {
+    AccountDAO.findByLogin(accountLogin.login) map {
+      case None =>
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This login doesn't match any account"))
+      case Some(accountEntity) =>
+        requestContext.complete(ResponseLong(StatusCodes.OK.intValue, accountEntity.session_time))
     }
   }
 

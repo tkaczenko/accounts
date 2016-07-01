@@ -48,6 +48,14 @@ object AccountDAO {
       BSONDocument("$set" -> BSONDocument("enabled" -> enabled))
     )
 
+  def checkPassword(login: String, oldPass: Int, newPass: Int): Boolean = {
+    if (findByLogin(login).equals(None)) {
+      false
+    } else {
+      true
+    }
+  }
+
   def findById(id: Int) = MongoDBConnection.collection_accounts
     .find(BSONDocument("_id" -> id))
     .one[AccountEntity]
