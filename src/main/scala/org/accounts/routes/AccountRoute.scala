@@ -54,7 +54,7 @@ trait AccountRoute extends HttpService {
             AccountService.deleteGroup(group)
           }
         } ~
-        path("insert_groupd") {
+        path("insert_group") {
           entity(as[UpdateGroup]) { group => implicit requestContext =>
             AccountService.insertGroup(group)
           }
