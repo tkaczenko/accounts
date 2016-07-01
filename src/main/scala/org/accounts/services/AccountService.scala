@@ -164,6 +164,15 @@ object AccountService {
     }
   }
 
+  def permissions(accountId: AccountId)(implicit requestContext: RequestContext) = {
+    AccountDAO.findById(accountId.id) map {
+      case None =>
+        requestContext.complete(ResponseString(StatusCodes.NotFound.intValue, "This id doesn't match any document"))
+      case Some(accountEntity) =>
+        requestContext.complete(ResponseSeqString(StatusCodes.OK.intValue, accountEntity.permissions))
+    }
+  }
+
   def processResult[T](value: Try[T])(implicit requestContext: RequestContext) = {
     value match {
       case Success(writeResult) => requestContext.complete(ResponseString(StatusCodes.OK.intValue, "Success"))

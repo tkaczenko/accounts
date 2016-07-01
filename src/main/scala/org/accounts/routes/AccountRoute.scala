@@ -75,7 +75,9 @@ trait AccountRoute extends HttpService {
           }
         } ~
         path("permissions") {
-          complete(???)
+          entity(as[AccountId]) { accountId => implicit requestContext =>
+            AccountService.permissions(accountId)
+          }
         }
     }
 }
