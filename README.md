@@ -55,9 +55,8 @@ curl -X POST http://localhost:8081/list -H "Content-Type: application/json" -d "
 
 | Answers                                                      |
 ---------------------------------------------------------------|
-|                                                              | 
-| {"code":400,"message":"Error"}                               |
-| {"code":204,"message":"No Content"}                          |
+| {"code":200,"message":[{"id":1,"enabled":true,"login":"ivanov111","email":"ivanov@gmail.com","name":"Ivan","surname":"Ivanov","roles":["User"],"groups":["5720a6bf56d06b2bbf907230"],"permissions":["Some"],"info":{"phone":"+380682321234","company":"INC"},"created":"2004-01-02T21:13:45-07:00",
+"hash":123456,"sessionTime":15}]}                              | 
 
 **ENABLE USER:**
 curl -X POST http://localhost:8081/enable -H "Content-Type: application/json" -d """{"id":1}"""
@@ -80,7 +79,7 @@ curl -X POST http://localhost:8081/disable -H "Content-Type: application/json" -
 
 
 **DELETE GROUP:**
-curl -X POST http://localhost:8081/delete_group -H "Content-Type: application/json" -d
+curl -X POST http://localhost:8081/delete_group -H "Content-Type: application/json" -d """{"id":1,"name":"Some group"}"""
 
 | Answers                                                      |
 ---------------------------------------------------------------|
@@ -89,7 +88,7 @@ curl -X POST http://localhost:8081/delete_group -H "Content-Type: application/js
 | {"code":404,"message":"This id doesn't match any document"}  |
 
 **DELETE ROLE:**
-curl -X POST http://localhost:8081/acl/roles/delete_role -H "Content-Type: application/json" -d 
+curl -X POST http://localhost:8081/acl/roles/delete_role -H "Content-Type: application/json" -d """{"id":1,"name":"Some role"}"""
 
 | Answers                                                      |
 ---------------------------------------------------------------|
@@ -98,7 +97,7 @@ curl -X POST http://localhost:8081/acl/roles/delete_role -H "Content-Type: appli
 | {"code":404,"message":"This id doesn't match any document"}  |
 
 **INSERT ROLE:**
-curl -X POST http://localhost:8081/insert_role -H "Content-Type: application/json" -d
+curl -X POST http://localhost:8081/insert_role -H "Content-Type: application/json" -d """{"id":1,"name":"Some role"}"""
 
 | Answers                                                      |
 ---------------------------------------------------------------|
@@ -128,5 +127,5 @@ curl -X POST http://localhost:8081/permissions -H "Content-Type: application/jso
 
 | Answers                                                      |
 ---------------------------------------------------------------|
-|                                                              |
+| {"code":200,"message":["Some"]}                              |
 | {"code":404,"message":"This id doesn't match any document"}  |
