@@ -55,8 +55,7 @@ curl -X POST http://localhost:8081/list -H "Content-Type: application/json" -d "
 
 | Answers                                                      |
 ---------------------------------------------------------------|
-| {"code":200,"message":[{"id":1,"enabled":true,"login":"ivanov111","email":"ivanov@gmail.com","name":"Ivan","surname":"Ivanov","roles":["User"],"groups":["5720a6bf56d06b2bbf907230"],"permissions":["Some"],"info":{"phone":"+380682321234","company":"INC"},"created":"2004-01-02T21:13:45-07:00",
-"hash":123456,"sessionTime":15}]}                              | 
+| {"code":200,"message":[{"id":1,"enabled":true,"login":"ivanov111","email":"ivanov@gmail.com","name":"Ivan","surname":"Ivanov","roles":["User"],"groups":["5720a6bf56d06b2bbf907230"],"permissions":["Some"],"info":{"phone":"+380682321234","company":"INC"},"created":"2004-01-02T21:13:45-07:00","hash":123456,"sessionTime":15}]}           | 
 
 **ENABLE USER:**
 curl -X POST http://localhost:8081/enable -H "Content-Type: application/json" -d """{"id":1}"""
