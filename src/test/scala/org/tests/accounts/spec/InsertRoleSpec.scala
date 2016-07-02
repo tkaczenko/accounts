@@ -8,6 +8,7 @@ import spray.http.ContentTypes._
 import spray.http.HttpEntity
 import spray.routing.HttpService
 import spray.testkit.ScalatestRouteTest
+import org.scalatest.concurrent.Eventually.eventually
 
 /**
   * Created by tkacz- on 02.07.16.
@@ -23,7 +24,9 @@ class InsertRoleSpec extends FlatSpec with ScalatestRouteTest with HttpService w
       """{"id":1,
         |"name":"Some role"}""".stripMargin)
     ) ~> routs ~> check {
-      responseAs[ResponseString] === ResponseString(code = 200, message = "Success")
+      eventually {
+        responseAs[ResponseString] === ResponseString(code = 200, message = "Success")
+      }
     }
   }
 }
