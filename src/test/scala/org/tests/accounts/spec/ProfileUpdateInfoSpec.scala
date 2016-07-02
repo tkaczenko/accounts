@@ -18,7 +18,7 @@ class ProfileUpdateInfoSpec extends FlatSpec with ScalatestRouteTest with HttpSe
 
   def actorRefFactory = system
 
-  it should ("return JSON response with code 200") in {
+  "AccountService" should "return JSON response with code 200" in {
     Post(url, HttpEntity(`application/json`,
       """{"login":"ivanov111",
         |"info":{"phone":"+3806632324","company":"Ltd"}}""".stripMargin)

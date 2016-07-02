@@ -21,7 +21,7 @@ class DeleteRoleSpec extends FlatSpec with ScalatestRouteTest with HttpService w
 
   def actorRefFactory = system
 
-  it should ("return JSON response with code 200") in {
+  "AccountService" should "return JSON response with code 200" in {
     Post(url, HttpEntity(`application/json`,
       """{"id":1,
         |"name":"Some role"}""".stripMargin)

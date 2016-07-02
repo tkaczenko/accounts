@@ -18,7 +18,7 @@ class InsertGroupSpec extends FlatSpec with ScalatestRouteTest with HttpService 
 
   def actorRefFactory = system
 
-  it should ("return JSON response with code 200") in {
+  "AccountService" should "return JSON response with code 200" in {
     Post(url, HttpEntity(`application/json`,
       """{"id":1,
         |"name":"Some group"}""".stripMargin)

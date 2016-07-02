@@ -33,7 +33,7 @@ class CreateSpec extends FlatSpec with ScalatestRouteTest with HttpService with 
     sessionTime = 15
   )
 
-  it should "return JSON response with message Success" in {
+  "AccountService" should "return JSON response with message Success" in {
     Post(url, account) ~> routs ~> check {
       eventually {
         responseAs[ResponseString] === ResponseString(code = 200, message = "Success")
